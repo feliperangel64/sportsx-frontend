@@ -4,10 +4,18 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+
 import api from '../../services/api'
 import { useHistory } from 'react-router-dom'
+import { cepMask } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
+  radio: {
+    flexDirection: 'row',
+  },
   buttons: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -22,7 +30,9 @@ export default function Form() {
   const classes = useStyles()
   const history = useHistory()
   const [state, setState] = React.useState({
-    TipoPessoa: '',
+    TipoPessoa: 'PF',
+    Cpf: '',
+    Cnpj: '',
     NomeCliente: '',
     RazaoSocial: '',
     Cep: '',
@@ -36,13 +46,20 @@ export default function Form() {
     setState({ ...state, [event.target.name]: event.target.value })
   }
 
+  const handleChangeCep = (event) => {
+    setState({ ...state, [event.target.name]: cepMask(event.target.value) })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await api.post('/clientes', state)
     if (res.status === 201) history.push('/')
   }
+
   const {
     TipoPessoa,
+    Cpf,
+    Cnpj,
     NomeCliente,
     RazaoSocial,
     Cep,
@@ -51,24 +68,62 @@ export default function Form() {
     TelefoneResidencial,
     TelefoneComercial,
   } = state
+  console.log(state)
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Dados do cliente
       </Typography>
-      <form onSubmit={handleSubmit} noValidate>
+      <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <TextField
-              required
-              id="tipoPessoa"
+            <RadioGroup
               name="TipoPessoa"
-              label="Tipo pessoa"
-              fullWidth
               value={TipoPessoa}
               onChange={handleChange}
-            />
+              className={classes.radio}
+            >
+              <Grid item xs={6}>
+                <FormControlLabel
+                  value="PF"
+                  control={<Radio />}
+                  label="Pessoa física"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <FormControlLabel
+                  value="PJ"
+                  control={<Radio />}
+                  label="Pessoa jurídica"
+                />
+              </Grid>
+            </RadioGroup>
           </Grid>
+          {TipoPessoa === 'PF' ? (
+            <Grid item xs={12}>
+              <TextField
+                required
+                id="cpf"
+                name="Cpf"
+                label="CPF"
+                fullWidth
+                value={Cpf}
+                onChange={handleChange}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <TextField
+                required
+                id="cnpj"
+                name="Cnpj"
+                label="CNPJ"
+                fullWidth
+                value={Cnpj}
+                onChange={handleChange}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               required
@@ -78,23 +133,26 @@ export default function Form() {
               fullWidth
               value={NomeCliente}
               onChange={handleChange}
+              inputProps={{ maxLength: 100 }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
               id="razaoSocial"
               name="RazaoSocial"
               label="Razão social"
               fullWidth
               value={RazaoSocial}
               onChange={handleChange}
+              inputProps={{ maxLength: 100 }}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
+              required
               id="email"
               name="Email"
+              type="email"
               label="E-mail"
               fullWidth
               value={Email}
@@ -103,13 +161,12 @@ export default function Form() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               id="cep"
               name="Cep"
               label="Cep"
               fullWidth
               value={Cep}
-              onChange={handleChange}
+              onChange={handleChangeCep}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -125,7 +182,6 @@ export default function Form() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               id="telefoneResidencial"
               name="TelefoneResidencial"
               label="Telefone residencial"
@@ -136,7 +192,6 @@ export default function Form() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
-              required
               id="telefoneComercial"
               name="TelefoneComercial"
               label="Telefone comercial"
