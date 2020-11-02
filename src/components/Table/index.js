@@ -8,12 +8,13 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const TableCustom = ({ data }) => {
   console.log(data)
   return (
     <>
-      <Typography>Recent Orders</Typography>
+      <Typography>Clientes</Typography>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -21,6 +22,7 @@ const TableCustom = ({ data }) => {
             <TableCell>Nome do Cliente</TableCell>
             <TableCell>Classificação</TableCell>
             <TableCell>Telefone</TableCell>
+            <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -30,6 +32,9 @@ const TableCustom = ({ data }) => {
               <TableCell>{row.NomeCliente}</TableCell>
               <TableCell>{row.Classificacao}</TableCell>
               <TableCell>{row.TelefoneResidencial}</TableCell>
+              <TableCell>
+                <Link to="/edit/2">Editar</Link>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
