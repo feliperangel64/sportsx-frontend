@@ -1,11 +1,26 @@
 import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import api from '../../services/api'
+import { useHistory } from 'react-router-dom'
+
+const useStyles = makeStyles((theme) => ({
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+  },
+}))
 
 export default function Form() {
+  const classes = useStyles()
+  const history = useHistory()
   const [state, setState] = React.useState({
     TipoPessoa: '',
     NomeCliente: '',
@@ -21,8 +36,10 @@ export default function Form() {
     setState({ ...state, [event.target.name]: event.target.value })
   }
 
-  const handleSubmit = async () => {
-    await api.post('/clientes', state)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const res = await api.post('/clientes', state)
+    if (res.status === 201) history.push('/')
   }
   const {
     TipoPessoa,
@@ -39,7 +56,7 @@ export default function Form() {
       <Typography variant="h6" gutterBottom>
         Dados do cliente
       </Typography>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
@@ -128,10 +145,17 @@ export default function Form() {
               onChange={handleChange}
             />
           </Grid>
-          <Button variant="contained" color="primary" type="submit">
-            save
-          </Button>
         </Grid>
+        <div className={classes.buttons}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            className={classes.button}
+          >
+            Salvar
+          </Button>
+        </div>
       </form>
     </React.Fragment>
   )

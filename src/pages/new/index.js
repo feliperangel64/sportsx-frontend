@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
-import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
 import Form from './Form'
@@ -10,8 +9,8 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="">
+        SportX
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -20,9 +19,6 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  appBar: {
-    position: 'relative',
-  },
   layout: {
     width: 'auto',
     marginLeft: theme.spacing(2),
@@ -43,26 +39,10 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
     },
   },
-  stepper: {
-    padding: theme.spacing(3, 0, 5),
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  button: {
-    marginTop: theme.spacing(3),
-    marginLeft: theme.spacing(1),
-  },
 }))
 
 export default function Checkout() {
   const classes = useStyles()
-  const [activeStep, setActiveStep] = React.useState(0)
-
-  const handleNext = () => {
-    setActiveStep(activeStep + 1)
-  }
 
   return (
     <React.Fragment>
@@ -72,16 +52,6 @@ export default function Checkout() {
             Cadastro
           </Typography>
           <Form />
-          <div className={classes.buttons}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleNext}
-              className={classes.button}
-            >
-              Salvar
-            </Button>
-          </div>
         </Paper>
         <Copyright />
       </main>
