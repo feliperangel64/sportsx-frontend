@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import api from '../../services/api'
 import { useHistory } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -21,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Form() {
   const classes = useStyles()
   const history = useHistory()
+  const { id } = useParams()
+
   const [cliente, setCliente] = useState({
     TipoPessoa: '',
     NomeCliente: '',
@@ -39,14 +42,14 @@ export default function Form() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await api.put('/clientes/2', cliente)
+    const res = await api.put(`/clientes/${id}`, cliente)
     if (res.status === 201) history.push('/')
   }
 
   useEffect(() => {
     async function getClientes() {
       try {
-        const { data } = await api.get('/clientes/2')
+        const { data } = await api.get(`/clientes/${id}`)
         setCliente(data[0])
       } catch (error) {
         alert('Ocorreu um erro ao buscar os items')

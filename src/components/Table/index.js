@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
+import ModalExcluir from '../Modal'
 
 const TableCustom = ({ data }) => {
   console.log(data)
@@ -22,7 +23,8 @@ const TableCustom = ({ data }) => {
             <TableCell>Nome do Cliente</TableCell>
             <TableCell>Classificação</TableCell>
             <TableCell>Telefone</TableCell>
-            <TableCell>Ações</TableCell>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -33,7 +35,10 @@ const TableCustom = ({ data }) => {
               <TableCell>{row.Classificacao}</TableCell>
               <TableCell>{row.TelefoneResidencial}</TableCell>
               <TableCell>
-                <Link to="/edit/2">Editar</Link>
+                <Link to={`/edit/${row.ClienteId}`}>Editar</Link>
+              </TableCell>
+              <TableCell>
+                <ModalExcluir id={row.ClienteId} />
               </TableCell>
             </TableRow>
           ))}
