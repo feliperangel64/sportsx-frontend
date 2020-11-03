@@ -26,6 +26,7 @@ export default function AlertDialog({ id }) {
     e.preventDefault()
     await api.delete(`/clientes/${id}`)
     handleClose()
+    window.location.reload()
   }
 
   return (
