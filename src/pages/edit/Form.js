@@ -79,7 +79,7 @@ export default function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const res = await api.put(`/clientes/${id}`, cliente)
-    if (res.status === 201) history.push('/')
+    if (res.status === 200) history.push('/')
   }
 
   useEffect(() => {
@@ -93,7 +93,7 @@ export default function Form() {
     }
     getClientes()
   }, [])
-  console.log(cliente)
+
   const {
     TipoPessoa,
     Cpf,
@@ -173,17 +173,19 @@ export default function Form() {
               inputProps={{ maxLength: 100 }}
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="razaoSocial"
-              name="RazaoSocial"
-              label="Razão social"
-              fullWidth
-              value={RazaoSocial}
-              onChange={handleChange}
-              inputProps={{ maxLength: 100 }}
-            />
-          </Grid>
+          {TipoPessoa === 'PJ' && (
+            <Grid item xs={12}>
+              <TextField
+                id="razaoSocial"
+                name="RazaoSocial"
+                label="Razão social"
+                fullWidth
+                value={RazaoSocial}
+                onChange={handleChange}
+                inputProps={{ maxLength: 100 }}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               required

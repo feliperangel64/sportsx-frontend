@@ -85,7 +85,7 @@ export default function Form() {
     TelefoneResidencial,
     TelefoneComercial,
   } = state
-  console.log(state)
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -153,17 +153,19 @@ export default function Form() {
               inputProps={{ maxLength: 100 }}
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="razaoSocial"
-              name="RazaoSocial"
-              label="Razão social"
-              fullWidth
-              value={RazaoSocial}
-              onChange={handleChange}
-              inputProps={{ maxLength: 100 }}
-            />
-          </Grid>
+          {TipoPessoa === 'PJ' && (
+            <Grid item xs={12}>
+              <TextField
+                id="razaoSocial"
+                name="RazaoSocial"
+                label="Razão social"
+                fullWidth
+                value={RazaoSocial}
+                onChange={handleChange}
+                inputProps={{ maxLength: 100 }}
+              />
+            </Grid>
+          )}
           <Grid item xs={12}>
             <TextField
               required
