@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
+import {
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@material-ui/core'
 import api from '../../services/api'
 import { useHistory } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { cepMask } from '../../utils'
+import { cepMask, cnpjMask, cpfMask, phoneMask } from '../../utils'
 
 const useStyles = makeStyles((theme) => ({
   radio: {
@@ -48,8 +54,26 @@ export default function Form() {
     setCliente({ ...cliente, [event.target.name]: event.target.value })
   }
 
+  const handleChangeCpf = (event) => {
+    setCliente({ ...cliente, [event.target.name]: cpfMask(event.target.value) })
+  }
+
+  const handleChangeCnpj = (event) => {
+    setCliente({
+      ...cliente,
+      [event.target.name]: cnpjMask(event.target.value),
+    })
+  }
+
   const handleChangeCep = (event) => {
     setCliente({ ...cliente, [event.target.name]: cepMask(event.target.value) })
+  }
+
+  const handleChangeTelefone = (event) => {
+    setCliente({
+      ...cliente,
+      [event.target.name]: phoneMask(event.target.value),
+    })
   }
 
   const handleSubmit = async (e) => {
@@ -121,7 +145,7 @@ export default function Form() {
                 label="CPF"
                 fullWidth
                 value={Cpf}
-                onChange={handleChange}
+                onChange={handleChangeCpf}
               />
             </Grid>
           ) : (
@@ -133,7 +157,7 @@ export default function Form() {
                 label="CNPJ"
                 fullWidth
                 value={Cnpj}
-                onChange={handleChange}
+                onChange={handleChangeCnpj}
               />
             </Grid>
           )}
@@ -183,15 +207,21 @@ export default function Form() {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="classificacao"
-              name="Classificacao"
-              label="Classificação"
-              fullWidth
-              value={Classificacao}
-              onChange={handleChange}
-            />
+            <FormControl fullWidth>
+              <InputLabel id="classificacao-label">Classificação</InputLabel>
+              <Select
+                required
+                labelId="classificacao-label"
+                id="classificacao"
+                name="Classificacao"
+                value={Classificacao}
+                onChange={handleChange}
+              >
+                <MenuItem value="Ativo">Ativo</MenuItem>
+                <MenuItem value="Inativo">Inativo</MenuItem>
+                <MenuItem value="Preferencial">Preferencial</MenuItem>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -200,7 +230,7 @@ export default function Form() {
               label="Telefone residencial"
               fullWidth
               value={TelefoneResidencial}
-              onChange={handleChange}
+              onChange={handleChangeTelefone}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -210,7 +240,7 @@ export default function Form() {
               label="Telefone comercial"
               fullWidth
               value={TelefoneComercial}
-              onChange={handleChange}
+              onChange={handleChangeTelefone}
             />
           </Grid>
         </Grid>
