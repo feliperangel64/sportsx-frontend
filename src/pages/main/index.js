@@ -30,9 +30,11 @@ const Main = () => {
 
   const buscaClientes = async (event) => {
     setSelectedValue(event.target.value)
-    const { data } = await api.get(`/clientes/busca/${event.target.value}`)
-    if (data) {
-      setClientes(data)
+    if (event.target.value) {
+      const { data } = await api.get(`/clientes/busca/${event.target.value}`)
+      if (data) {
+        setClientes(data)
+      }
     } else {
       getClientes()
     }
