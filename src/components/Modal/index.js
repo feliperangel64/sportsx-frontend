@@ -1,11 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@material-ui/core'
+import { Delete } from '@material-ui/icons/'
 import api from '../../services/api'
 
 export default function AlertDialog({ id }) {
@@ -27,9 +30,11 @@ export default function AlertDialog({ id }) {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
+      <Delete
+        onClick={handleClickOpen}
+        style={{ cursor: 'pointer' }}
+        color="secondary"
+      />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -41,14 +46,14 @@ export default function AlertDialog({ id }) {
         <DialogTitle id="alert-dialog-title">Excluir cliente</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Deseja excluir este cliente?
+            Tem certeza que deseja excluir este cliente?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} variant="outlined" color="primary">
             Cancelar
           </Button>
-          <Button onClick={handleConfirm} color="primary" autoFocus>
+          <Button onClick={handleConfirm} variant="contained" color="primary">
             Excluir
           </Button>
         </DialogActions>

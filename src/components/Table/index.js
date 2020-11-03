@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import {
   Table,
   TableBody,
@@ -7,12 +8,12 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grid,
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Edit } from '@material-ui/icons'
 import ModalExcluir from '../Modal'
 
 const TableCustom = ({ data }) => {
-  console.log(data)
   return (
     <>
       <Typography>Clientes</Typography>
@@ -22,23 +23,34 @@ const TableCustom = ({ data }) => {
             <TableCell>CPF/CNPJ</TableCell>
             <TableCell>Nome do Cliente</TableCell>
             <TableCell>Classificação</TableCell>
-            <TableCell>Telefone</TableCell>
-            <TableCell></TableCell>
-            <TableCell></TableCell>
+            <TableCell>Telefones</TableCell>
+            <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((row) => (
             <TableRow key={row.ClienteId}>
-              <TableCell>{row.TipoPessoa}</TableCell>
+              <TableCell>
+                {row.TipoPessoa === 'PF' ? row.Cpf : row.Cnpj}
+              </TableCell>
               <TableCell>{row.NomeCliente}</TableCell>
               <TableCell>{row.Classificacao}</TableCell>
-              <TableCell>{row.TelefoneResidencial}</TableCell>
               <TableCell>
-                <Link to={`/edit/${row.ClienteId}`}>Editar</Link>
+                {row.TelefoneResidencial && row.TelefoneComercial
+                  ? `${row.TelefoneResidencial} / ${row.TelefoneResidencial} `
+                  : row.TelefoneResidencial}
               </TableCell>
               <TableCell>
-                <ModalExcluir id={row.ClienteId} />
+                <Grid container spacing={2}>
+                  <Grid item>
+                    <Link to={`/edit/${row.ClienteId}`}>
+                      <Edit color="primary" />
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <ModalExcluir id={row.ClienteId} />
+                  </Grid>
+                </Grid>
               </TableCell>
             </TableRow>
           ))}
